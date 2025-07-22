@@ -110,7 +110,18 @@
 
     <!-- Modals -->
     <div id="addEditRoomModal" class="modal fixed inset-0 bg-black/60 z-30 items-center justify-center p-4"><div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md"><h3 id="roomModalTitle" class="text-2xl font-bold mb-6"></h3><form id="addEditRoomForm"><div><label for="roomNameInput" class="block text-sm font-medium text-slate-700 mb-2">Nama Ruangan</label><input type="text" id="roomNameInput" class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required></div><div class="mt-8 flex justify-end gap-3"><button type="button" class="modal-cancel bg-slate-100 text-slate-800 hover:bg-slate-200 font-semibold py-2 px-4 rounded-lg transition-all">Batal</button><button type="submit" class="bg-indigo-600 text-white hover:bg-indigo-700 font-semibold py-2 px-4 rounded-lg transition-all">Simpan</button></div></form></div></div>
-    <div id="addEditItemModal" class="modal fixed inset-0 bg-black/60 z-30 items-center justify-center p-4"><div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md relative"><h3 id="itemModalTitle" class="text-2xl font-bold mb-6"></h3><form id="addEditItemForm"><div class="space-y-4"><div><label for="itemName" class="block text-sm font-medium text-slate-700 mb-2">Nama Barang</label><input type="text" id="itemName" class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required></div><div><label for="itemCategory" class="block text-sm font-medium text-slate-700 mb-2">Kategori</label><input type="text" id="itemCategory" class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required></div><div><label for="itemDescription" class="block text-sm font-medium text-slate-700 mb-2">Keterangan</label><textarea id="itemDescription" rows="3" class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea></div><div><label for="itemQuantity" class="block text-sm font-medium text-slate-700 mb-2">Jumlah</label><input type="number" id="itemQuantity" min="0" value="1" class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required></div><div><label for="itemPhoto" class="block text-sm font-medium text-slate-700 mb-2">Foto Barang</label><input type="file" id="itemPhoto" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition-all"><img id="photoPreview" src="#" alt="Pratinjau Foto" class="mt-4 rounded-lg hidden max-h-40 mx-auto"/></div></div><div class="mt-8 flex justify-end gap-3"><button type="button" class="modal-cancel bg-slate-100 text-slate-800 hover:bg-slate-200 font-semibold py-2 px-4 rounded-lg transition-all">Batal</button><button type="submit" class="bg-indigo-600 text-white hover:bg-indigo-700 font-semibold py-2 px-4 rounded-lg flex items-center justify-center transition-all w-28">Simpan</button></div></form></div></div>
+    <div id="addEditItemModal" class="modal fixed inset-0 bg-black/60 z-30 items-center justify-center p-4"><div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg"><h3 id="itemModalTitle" class="text-2xl font-bold mb-6"></h3><form id="addEditItemForm"><div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[70vh] overflow-y-auto pr-2">
+        <div id="itemNoContainer" class="md:col-span-2 hidden"><p class="text-sm text-slate-600">No Urut Ruangan: <span id="itemNoDisplay" class="font-bold"></span></p></div>
+        <div><label for="itemNoPendaftaran" class="block text-sm font-medium text-slate-700 mb-2">No Urut Pendaftaran</label><input type="text" id="itemNoPendaftaran" class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></div>
+        <div><label for="itemKodeBarang" class="block text-sm font-medium text-slate-700 mb-2">Kode Barang</label><input type="text" id="itemKodeBarang" class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></div>
+        <div class="md:col-span-2"><label for="itemName" class="block text-sm font-medium text-slate-700 mb-2">Nama Barang</label><input type="text" id="itemName" class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required></div>
+        <div><label for="itemMerk" class="block text-sm font-medium text-slate-700 mb-2">Merk / Type</label><input type="text" id="itemMerk" class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></div>
+        <div><label for="itemTahun" class="block text-sm font-medium text-slate-700 mb-2">Tahun Perolehan</label><input type="number" id="itemTahun" class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></div>
+        <div><label for="itemJumlah" class="block text-sm font-medium text-slate-700 mb-2">Jumlah Barang</label><input type="number" id="itemJumlah" min="0" value="1" class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required></div>
+        <div><label for="itemPenguasaan" class="block text-sm font-medium text-slate-700 mb-2">Penguasaan</label><input type="text" id="itemPenguasaan" class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></div>
+        <div class="md:col-span-2"><label for="itemKeterangan" class="block text-sm font-medium text-slate-700 mb-2">Keterangan</label><textarea id="itemKeterangan" rows="3" class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea></div>
+        <div class="md:col-span-2"><label for="itemPhoto" class="block text-sm font-medium text-slate-700 mb-2">Foto Barang</label><input type="file" id="itemPhoto" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition-all"><img id="photoPreview" src="#" alt="Pratinjau Foto" class="mt-4 rounded-lg hidden max-h-40 mx-auto"/></div>
+    </div><div class="mt-8 flex justify-end gap-3"><button type="button" class="modal-cancel bg-slate-100 text-slate-800 hover:bg-slate-200 font-semibold py-2 px-4 rounded-lg transition-all">Batal</button><button type="submit" class="bg-indigo-600 text-white hover:bg-indigo-700 font-semibold py-2 px-4 rounded-lg flex items-center justify-center transition-all w-36">Simpan</button></div></form></div></div>
     <div id="qrCodeModal" class="modal fixed inset-0 bg-black/60 z-30 items-center justify-center p-4"><div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-xs text-center"><h3 class="text-2xl font-bold mb-2">QR Code Ruangan</h3><p id="qrCodeRoomName" class="text-slate-600 mb-6"></p><div id="qrcode-container" class="p-4 border rounded-lg bg-white"><div id="qrcode"></div></div><div class="mt-8 flex justify-end gap-3"><button type="button" class="modal-cancel bg-slate-100 text-slate-800 hover:bg-slate-200 font-semibold py-2 px-4 rounded-lg transition-all">Tutup</button><button type="button" id="downloadQRBtn" class="bg-indigo-600 text-white hover:bg-indigo-700 font-semibold py-2 px-4 rounded-lg transition-all">Unduh</button></div></div></div>
     <div id="scannerModal" class="modal fixed inset-0 bg-black/60 z-30 items-center justify-center p-4"><div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md text-center"><h3 class="text-2xl font-bold mb-4">Pindai QR Code Ruangan</h3><div id="reader" class="w-full rounded-lg overflow-hidden border"></div><div id="scanStatus" class="mt-4 text-sm h-5">Arahkan kamera ke QR code...</div><div class="mt-6"><button type="button" id="stopScanBtn" class="modal-cancel w-full bg-red-600 text-white hover:bg-red-700 font-semibold py-2 px-4 rounded-lg transition-all">Tutup Scanner</button></div></div></div>
     <div id="deleteConfirmationModal" class="modal fixed inset-0 bg-black/60 z-30 items-center justify-center p-4"><div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md text-center"><svg class="mx-auto h-16 w-16 text-red-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg><h3 id="deleteModalTitle" class="text-2xl font-bold mb-2">Anda Yakin?</h3><p id="deleteModalText" class="text-slate-500 mb-6"></p><div class="flex justify-center gap-4"><button type="button" class="modal-cancel bg-slate-100 text-slate-800 hover:bg-slate-200 font-semibold py-2 px-6 rounded-lg transition-all">Batal</button><button type="button" id="confirmDeleteBtn" class="bg-red-600 text-white hover:bg-red-700 font-semibold py-2 px-6 rounded-lg transition-all">Hapus</button></div></div></div>
@@ -121,13 +132,13 @@
         // PASTE KONFIGURASI FIREBASE ANDA DI SINI
         // ===================================================================================
         const firebaseConfig = {
-			apiKey: "AIzaSyC4IMkGdgUUlEAIDeTrGE1dDF6HeloaxNQ",
-			authDomain: "simanis-423b3.firebaseapp.com",
-			projectId: "simanis-423b3",
-			storageBucket: "simanis-423b3.firebasestorage.app",
-			messagingSenderId: "1094491007403",
-			appId: "1:1094491007403:web:03cb887160f8aa7ab60aee"
-		};
+  apiKey: "AIzaSyC4IMkGdgUUlEAIDeTrGE1dDF6HeloaxNQ",
+  authDomain: "simanis-423b3.firebaseapp.com",
+  projectId: "simanis-423b3",
+  storageBucket: "simanis-423b3.firebasestorage.app",
+  messagingSenderId: "1094491007403",
+  appId: "1:1094491007403:web:03cb887160f8aa7ab60aee"
+};
         // ===================================================================================
         // AKHIR DARI AREA KONFIGURASI
         // ===================================================================================
@@ -194,7 +205,18 @@
             const scanBarcodeNavBtn = get('scanBarcodeNavBtn');
             const modals = { addEditRoom: get('addEditRoomModal'), addEditItem: get('addEditItemModal'), qrCode: get('qrCodeModal'), scanner: get('scannerModal'), deleteConfirmation: get('deleteConfirmationModal') };
             const forms = { addEditRoom: get('addEditRoomForm'), addEditItem: get('addEditItemForm') };
-            const inputs = { roomName: get('roomNameInput'), itemName: get('itemName'), itemCategory: get('itemCategory'), itemDescription: get('itemDescription'), itemQuantity: get('itemQuantity'), itemPhoto: get('itemPhoto') };
+            const inputs = { 
+                roomName: get('roomNameInput'), 
+                noPendaftaran: get('itemNoPendaftaran'),
+                namaBarang: get('itemName'),
+                merk: get('itemMerk'),
+                kodeBarang: get('itemKodeBarang'),
+                tahun: get('itemTahun'),
+                jumlah: get('itemJumlah'),
+                penguasaan: get('itemPenguasaan'),
+                keterangan: get('itemKeterangan'),
+                photo: get('itemPhoto') 
+            };
             const photoPreview = get('photoPreview');
             const qrCodeRoomName = get('qrCodeRoomName');
             const downloadQRBtn = get('downloadQRBtn');
@@ -205,6 +227,8 @@
             const deleteModalTitle = get('deleteModalTitle');
             const deleteModalText = get('deleteModalText');
             const confirmDeleteBtn = get('confirmDeleteBtn');
+            const itemNoContainer = get('itemNoContainer');
+            const itemNoDisplay = get('itemNoDisplay');
 
             const renderRooms = () => {
                 roomListContainer.innerHTML = '';
@@ -271,7 +295,7 @@
                         itemCard.className = 'group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col';
                         itemCard.innerHTML = `
                             <div class="relative">
-                                <img src="${item.photo}" alt="${item.name}" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x300/e2e8f0/64748b?text=Gambar+Rusak';">
+                                <img src="${item.photo}" alt="${item.namaBarang}" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x300/e2e8f0/64748b?text=Gambar+Rusak';">
                                 <div class="absolute top-2 right-2">
                                     <button class="item-menu-btn group-hover:opacity-100 opacity-0 p-1.5 rounded-full bg-black/40 text-white hover:bg-black/60 transition-opacity" data-id="${item.id}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>
@@ -283,12 +307,18 @@
                                 </div>
                             </div>
                             <div class="p-4 flex flex-col flex-grow">
-                                <div class="flex justify-between items-center">
-                                    <p class="text-sm text-indigo-600 font-semibold">${item.category}</p>
-                                    <p class="text-sm font-bold text-slate-700">Jumlah: ${item.quantity || 0}</p>
+                                <div class="flex justify-between items-start">
+                                    <h4 class="font-bold text-lg text-slate-800" title="${item.namaBarang}">${item.namaBarang}</h4>
+                                    <p class="text-sm font-bold text-slate-700 bg-slate-100 px-2 py-1 rounded">No: ${item.no || 'N/A'}</p>
                                 </div>
-                                <h4 class="font-bold text-lg text-slate-800 truncate mt-1" title="${item.name}">${item.name}</h4>
-                                <p class="text-sm text-slate-500 mt-2 flex-grow">${item.description || ''}</p>
+                                <p class="text-sm text-slate-500 mt-1">${item.merk || ''}</p>
+                                <hr class="my-3">
+                                <div class="grid grid-cols-2 gap-2 text-sm flex-grow">
+                                    <div><span class="font-semibold text-slate-600">Kode:</span> ${item.kodeBarang || '-'}</div>
+                                    <div><span class="font-semibold text-slate-600">Jumlah:</span> ${item.jumlah || 0}</div>
+                                    <div><span class="font-semibold text-slate-600">Tahun:</span> ${item.tahun || '-'}</div>
+                                    <div><span class="font-semibold text-slate-600">Penguasaan:</span> ${item.penguasaan || '-'}</div>
+                                </div>
                             </div>
                         `;
                         itemGrid.appendChild(itemCard);
@@ -382,6 +412,7 @@
                 forms.addEditItem.reset();
                 photoPreview.classList.add('hidden');
                 photoPreview.src = '#';
+                itemNoContainer.classList.add('hidden');
                 compressedPhotoData = null;
                 openModal(modals.addEditItem);
             });
@@ -392,12 +423,18 @@
                 if (!item) return;
                 editingItemId = itemId;
                 itemModalTitle.textContent = 'Edit Barang';
-                inputs.itemName.value = item.name;
-                inputs.itemCategory.value = item.category;
-                inputs.itemDescription.value = item.description || '';
-                inputs.itemQuantity.value = item.quantity || 1;
+                itemNoDisplay.textContent = item.no || 'N/A';
+                itemNoContainer.classList.remove('hidden');
+                inputs.noPendaftaran.value = item.noPendaftaran || '';
+                inputs.namaBarang.value = item.namaBarang;
+                inputs.merk.value = item.merk || '';
+                inputs.kodeBarang.value = item.kodeBarang || '';
+                inputs.tahun.value = item.tahun || '';
+                inputs.jumlah.value = item.jumlah || 1;
+                inputs.penguasaan.value = item.penguasaan || '';
+                inputs.keterangan.value = item.keterangan || '';
                 photoPreview.src = item.photo;
-                compressedPhotoData = item.photo; // Simpan data foto lama
+                compressedPhotoData = item.photo;
                 photoPreview.classList.remove('hidden');
                 openModal(modals.addEditItem);
             };
@@ -408,7 +445,7 @@
                 if (!item) return;
                 itemToDelete = item;
                 roomToDelete = null;
-                deleteModalTitle.textContent = `Hapus Barang "${item.name}"?`;
+                deleteModalTitle.textContent = `Hapus Barang "${item.namaBarang}"?`;
                 deleteModalText.textContent = `Aksi ini tidak dapat dibatalkan.`;
                 openModal(modals.deleteConfirmation);
             };
@@ -435,15 +472,13 @@
                 });
             };
 
-            inputs.itemPhoto.addEventListener('change', async (e) => {
+            inputs.photo.addEventListener('change', async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
-
                 const submitBtn = forms.addEditItem.querySelector('button[type="submit"]');
                 const originalBtnText = submitBtn.innerHTML;
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Mengompres...`;
-                
                 try {
                     compressedPhotoData = await compressImage(file);
                     photoPreview.src = compressedPhotoData;
@@ -473,7 +508,17 @@
                     }
                     
                     const roomRef = doc(db, "rooms", selectedRoomId);
-                    const itemData = { name: inputs.itemName.value, category: inputs.itemCategory.value, description: inputs.itemDescription.value, quantity: parseInt(inputs.itemQuantity.value, 10) || 0, photo: compressedPhotoData };
+                    const itemData = { 
+                        noPendaftaran: inputs.noPendaftaran.value,
+                        namaBarang: inputs.namaBarang.value,
+                        merk: inputs.merk.value,
+                        kodeBarang: inputs.kodeBarang.value,
+                        tahun: inputs.tahun.value,
+                        jumlah: parseInt(inputs.jumlah.value, 10) || 0,
+                        penguasaan: inputs.penguasaan.value,
+                        keterangan: inputs.keterangan.value,
+                        photo: compressedPhotoData 
+                    };
 
                     if (editingItemId) {
                         const itemIndex = room.items.findIndex(i => i.id === editingItemId);
@@ -483,7 +528,8 @@
                             await updateDoc(roomRef, { items: updatedItems });
                         }
                     } else {
-                        await updateDoc(roomRef, { items: arrayUnion({ id: `item_${Date.now()}`, ...itemData }) });
+                        const newNo = (room.items?.length || 0) + 1;
+                        await updateDoc(roomRef, { items: arrayUnion({ id: `item_${Date.now()}`, no: newNo, ...itemData }) });
                     }
                     closeModal(modals.addEditItem);
                 } catch (error) { console.error("Gagal menyimpan barang:", error); alert(error.message); } 
@@ -492,11 +538,45 @@
             
             confirmDeleteBtn.addEventListener('click', async () => {
                 if (roomToDelete) { await deleteDoc(doc(db, "rooms", roomToDelete)); roomToDelete = null; }
-                if (itemToDelete) { const roomRef = doc(db, "rooms", selectedRoomId); await updateDoc(roomRef, { items: arrayRemove(itemToDelete) }); itemToDelete = null; }
+                if (itemToDelete) { 
+                    const roomRef = doc(db, "rooms", selectedRoomId);
+                    await updateDoc(roomRef, { items: arrayRemove(itemToDelete) }); 
+                    itemToDelete = null; 
+                }
                 closeModal(modals.deleteConfirmation);
             });
 
-            downloadExcelBtn.addEventListener('click', () => { const room = rooms.find(r => r.id === selectedRoomId); if (!room || !room.items || room.items.length === 0) { alert("Tidak ada barang untuk diunduh."); return; } const btn = downloadExcelBtn; const originalBtnHTML = btn.innerHTML; btn.disabled = true; btn.innerHTML = `<svg class="animate-spin -ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses...`; setTimeout(() => { try { const dataForExcel = room.items.map(item => ({ "Nama Barang": item.name, "Kategori": item.category, "Jumlah": item.quantity || 0, "Keterangan": item.description, "Gambar": "Data Gambar" })); const ws = XLSX.utils.json_to_sheet(dataForExcel); ws['!cols'] = [ { wch: 30 }, { wch: 25 }, { wch: 10 }, { wch: 40 }, { wch: 20 } ]; const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Daftar Barang"); const safeFileName = room.name.replace(/[^a-z0-9]/gi, '_').toLowerCase(); XLSX.writeFile(wb, `inventaris_${safeFileName}.xlsx`); } catch (error) { console.error("Gagal membuat file Excel:", error); alert("Terjadi kesalahan."); } finally { btn.disabled = false; btn.innerHTML = originalBtnHTML; } }, 500); });
+            downloadExcelBtn.addEventListener('click', () => { 
+                const room = rooms.find(r => r.id === selectedRoomId); 
+                if (!room || !room.items || room.items.length === 0) { alert("Tidak ada barang untuk diunduh."); return; } 
+                const btn = downloadExcelBtn; 
+                const originalBtnHTML = btn.innerHTML; 
+                btn.disabled = true; 
+                btn.innerHTML = `<svg class="animate-spin -ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses...`; 
+                setTimeout(() => { 
+                    try { 
+                        const dataForExcel = room.items.map(item => ({ 
+                            "No": item.no,
+                            "No Urut Pendaftaran": item.noPendaftaran,
+                            "Nama Barang": item.namaBarang,
+                            "Merk / Type": item.merk,
+                            "Kode Barang": item.kodeBarang,
+                            "Tahun Perolehan": item.tahun,
+                            "Jumlah Barang": item.jumlah,
+                            "Penguasaan": item.penguasaan,
+                            "Keterangan": item.keterangan,
+                            "Gambar": "Data Gambar Base64"
+                        })); 
+                        const ws = XLSX.utils.json_to_sheet(dataForExcel); 
+                        ws['!cols'] = [ { wch: 5 }, { wch: 20 }, { wch: 30 }, { wch: 20 }, { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 40 }, { wch: 20 } ]; 
+                        const wb = XLSX.utils.book_new(); 
+                        XLSX.utils.book_append_sheet(wb, ws, "Daftar Barang"); 
+                        const safeFileName = room.name.replace(/[^a-z0-9]/gi, '_').toLowerCase(); 
+                        XLSX.writeFile(wb, `inventaris_${safeFileName}.xlsx`); 
+                    } catch (error) { console.error("Gagal membuat file Excel:", error); alert("Terjadi kesalahan."); } 
+                    finally { btn.disabled = false; btn.innerHTML = originalBtnHTML; } 
+                }, 500); 
+            });
             generateQRBtn.addEventListener('click', () => { const room = rooms.find(r => r.id === selectedRoomId); if (!room) return; qrCodeRoomName.textContent = room.name; qrcodeContainer.innerHTML = ''; qrCodeInstance = new QRCode(qrcodeContainer, { text: room.id, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H }); openModal(modals.qrCode); });
             downloadQRBtn.addEventListener('click', () => { const room = rooms.find(r => r.id === selectedRoomId); if (!room || !qrCodeInstance) return; const canvas = qrcodeContainer.querySelector('canvas'); const link = document.createElement('a'); link.href = canvas.toDataURL('image/png'); const safeFileName = room.name.replace(/[^a-z0-9]/gi, '_').toLowerCase(); link.download = `QR_Code_${safeFileName}.png`; document.body.appendChild(link); link.click(); document.body.removeChild(link); });
             const onScanSuccess = async (decodedText) => { const sleep = ms => new Promise(res => setTimeout(res, ms)); const foundRoom = rooms.find(r => r.id === decodedText); if (foundRoom) { scanStatus.textContent = `Ditemukan: ${foundRoom.name}!`; scanStatus.style.color = '#10b981'; await sleep(1500); stopScanner(); closeModal(modals.scanner); selectRoom(foundRoom.id); } else { scanStatus.textContent = 'QR Code tidak dikenali.'; scanStatus.style.color = '#ef4444'; } };
@@ -516,4 +596,4 @@
         }
     </script>
 </body>
-</html>
+</ht
