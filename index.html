@@ -52,6 +52,15 @@
                     <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Login</button>
                 </div>
             </form>
+            <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                    <div class="w-full border-t border-slate-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="bg-white px-2 text-slate-500">Atau</span>
+                </div>
+            </div>
+            <button type="button" id="guest-login-btn" class="w-full flex justify-center py-3 px-4 border border-slate-300 rounded-lg shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Masuk sebagai Tamu (Mode Preview)</button>
         </div>
     </div>
 
@@ -61,7 +70,7 @@
         <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-20 border-b border-slate-200">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
-                    <h1 class="text-xl sm:text-2xl font-bold text-slate-900">SIMANIS</h1>
+                    <h1 id="app-title" class="text-xl sm:text-2xl font-bold text-slate-900">SIMANIS</h1>
                     <div class="flex items-center gap-4">
                         <button id="scanBarcodeNavBtn" class="bg-indigo-100 text-indigo-700 hover:bg-indigo-200 font-semibold py-2 px-4 rounded-lg transition-all flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M0 .5A.5.5 0 0 1 .5 0h3a.5.5 0 0 1 0 1H1v2.5a.5.5 0 0 1-1 0v-3Zm12 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V1h-2.5a.5.5 0 0 1-.5-.5ZM.5 12a.5.5 0 0 1 .5.5V15h2.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5Zm15 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H15v-2.5a.5.5 0 0 1 .5-.5Z M4 4h1v1H4V4Z"/><path d="M7 2H2v5h5V2ZM3 3h3v3H3V3Zm2 8H4v1h1v-1Z"/><path d="M7 9H2v5h5V9Zm-4 1h3v3H3v-3Zm8-6h1v1h-1V4Z"/><path d="M9 2h5v5H9V2Zm1 1v3h3V3h-3ZM8 8v2h1v1H8v1h2v-2h1v2h1v-1h2v-1h-1v-1H9V8H8Zm1 1h1v1H9V9Zm2 2h1v1h-1v-1ZM8 5h1v1H8V5Zm5 5h1v1h-1v-1Zm-3 0h1v1h-1v-1Z"/><path d="M12 9h2V8h-2v1Z"/></svg>
@@ -142,29 +151,39 @@
         const loginForm = document.getElementById('login-form');
         const loginError = document.getElementById('login-error');
         const logoutBtn = document.getElementById('logoutBtn');
+        const guestLoginBtn = document.getElementById('guest-login-btn');
+
+        const startSession = (role) => {
+            sessionStorage.setItem('isLoggedIn', 'true');
+            sessionStorage.setItem('userRole', role);
+            loginScreen.style.display = 'none';
+            appContainer.style.display = 'flex';
+            initApp(role);
+        };
 
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const username = e.target.username.value;
             const password = e.target.password.value;
-
             if (username === APP_USER && password === APP_PASS) {
-                sessionStorage.setItem('isLoggedIn', 'true');
-                loginScreen.style.display = 'none';
-                appContainer.style.display = 'flex';
-                initApp();
+                startSession('admin');
             } else {
                 loginError.classList.remove('hidden');
             }
         });
 
+        guestLoginBtn.addEventListener('click', () => {
+            startSession('guest');
+        });
+
         logoutBtn.addEventListener('click', () => {
             sessionStorage.removeItem('isLoggedIn');
+            sessionStorage.removeItem('userRole');
             window.location.reload();
         });
 
         // --- App Initialization ---
-        function initApp() {
+        function initApp(role) {
             let rooms = [];
             let selectedRoomId = null;
             let editingRoomId = null;
@@ -213,6 +232,20 @@
             const confirmDeleteBtn = get('confirmDeleteBtn');
             const itemNoContainer = get('itemNoContainer');
             const itemNoDisplay = get('itemNoDisplay');
+            const appTitle = get('app-title');
+
+            // --- Role-based UI Changes ---
+            if (role === 'guest') {
+                appTitle.textContent = 'SIMANIS (Mode Preview)';
+                addRoomBtn.style.display = 'none';
+                addItemBtn.style.display = 'none';
+                logoutBtn.style.display = 'none';
+            } else {
+                appTitle.textContent = 'SIMANIS';
+                addRoomBtn.style.display = 'flex';
+                addItemBtn.style.display = 'flex';
+                logoutBtn.style.display = 'flex';
+            }
 
             const renderRooms = () => {
                 roomListContainer.innerHTML = '';
@@ -233,24 +266,26 @@
                         roomNameSpan.textContent = room.name;
                         roomNameSpan.className = 'flex-grow';
                         roomNameSpan.addEventListener('click', () => selectRoom(room.id));
-                        
-                        const menuContainer = document.createElement('div');
-                        menuContainer.className = 'relative';
-
-                        const menuButton = document.createElement('button');
-                        menuButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>`;
-                        menuButton.className = 'group-hover:opacity-100 p-1 rounded-full hover:bg-black/10 transition-opacity';
-                        menuButton.classList.toggle('opacity-100', room.id === selectedRoomId);
-                        menuButton.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(e.currentTarget.nextElementSibling); });
-
-                        const dropdownMenu = document.createElement('div');
-                        dropdownMenu.className = 'dropdown-menu absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-10 border border-slate-200';
-                        dropdownMenu.innerHTML = `<a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" data-action="edit-room" data-id="${room.id}">Edit</a><a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50" data-action="delete-room" data-id="${room.id}">Hapus</a>`;
-                        
-                        menuContainer.appendChild(menuButton);
-                        menuContainer.appendChild(dropdownMenu);
                         roomElement.appendChild(roomNameSpan);
-                        roomElement.appendChild(menuContainer);
+                        
+                        if (role === 'admin') {
+                            const menuContainer = document.createElement('div');
+                            menuContainer.className = 'relative';
+
+                            const menuButton = document.createElement('button');
+                            menuButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>`;
+                            menuButton.className = 'group-hover:opacity-100 p-1 rounded-full hover:bg-black/10 transition-opacity';
+                            menuButton.classList.toggle('opacity-100', room.id === selectedRoomId);
+                            menuButton.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(e.currentTarget.nextElementSibling); });
+
+                            const dropdownMenu = document.createElement('div');
+                            dropdownMenu.className = 'dropdown-menu absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-10 border border-slate-200';
+                            dropdownMenu.innerHTML = `<a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" data-action="edit-room" data-id="${room.id}">Edit</a><a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50" data-action="delete-room" data-id="${room.id}">Hapus</a>`;
+                            
+                            menuContainer.appendChild(menuButton);
+                            menuContainer.appendChild(dropdownMenu);
+                            roomElement.appendChild(menuContainer);
+                        }
                         roomListContainer.appendChild(roomElement);
                     });
                 }
@@ -277,9 +312,10 @@
                     room.items.forEach(item => {
                         const itemCard = document.createElement('div');
                         itemCard.className = 'group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col';
-                        itemCard.innerHTML = `
-                            <div class="relative">
-                                <img src="${item.photo}" alt="${item.namaBarang}" class="w-full h-48 object-cover cursor-pointer" onerror="this.onerror=null;this.src='https://placehold.co/400x300/e2e8f0/64748b?text=Gambar+Rusak';">
+                        
+                        let adminMenu = '';
+                        if (role === 'admin') {
+                            adminMenu = `
                                 <div class="absolute top-2 right-2">
                                     <button class="item-menu-btn group-hover:opacity-100 opacity-0 p-1.5 rounded-full bg-black/40 text-white hover:bg-black/60 transition-opacity" data-id="${item.id}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>
@@ -288,7 +324,13 @@
                                         <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" data-action="edit-item" data-id="${item.id}">Edit</a>
                                         <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50" data-action="delete-item" data-id="${item.id}">Hapus</a>
                                     </div>
-                                </div>
+                                </div>`;
+                        }
+
+                        itemCard.innerHTML = `
+                            <div class="relative">
+                                <img src="${item.photo}" alt="${item.namaBarang}" class="w-full h-48 object-cover cursor-pointer" onerror="this.onerror=null;this.src='https://placehold.co/400x300/e2e8f0/64748b?text=Gambar+Rusak';">
+                                ${adminMenu}
                             </div>
                             <div class="p-4 flex flex-col flex-grow">
                                 <div class="flex justify-between items-start">
@@ -343,7 +385,7 @@
                     closeModal(e.target.closest('.modal')); 
                 }
                 const target = e.target.closest('a[data-action]');
-                if (target) {
+                if (target && role === 'admin') {
                     e.preventDefault();
                     const { action, id } = target.dataset;
                     if (action === 'edit-room') handleEditRoom(id);
@@ -353,59 +395,84 @@
                     toggleDropdown(target.closest('.dropdown-menu'));
                 }
                 const itemMenuBtn = e.target.closest('.item-menu-btn');
-                if (itemMenuBtn) { e.stopPropagation(); toggleDropdown(itemMenuBtn.nextElementSibling); }
+                if (itemMenuBtn && role === 'admin') { 
+                    e.stopPropagation(); 
+                    toggleDropdown(itemMenuBtn.nextElementSibling); 
+                }
             });
             const selectRoom = (roomId) => { selectedRoomId = roomId; renderRooms(); renderItems(); };
 
-            addRoomBtn.addEventListener('click', () => {
-                editingRoomId = null;
-                roomModalTitle.textContent = 'Tambah Ruangan Baru';
-                forms.addEditRoom.reset();
-                openModal(modals.addEditRoom);
-            });
+            if (role === 'admin') {
+                addRoomBtn.addEventListener('click', () => {
+                    editingRoomId = null;
+                    roomModalTitle.textContent = 'Tambah Ruangan Baru';
+                    forms.addEditRoom.reset();
+                    openModal(modals.addEditRoom);
+                });
 
-            const handleEditRoom = (roomId) => {
-                const room = rooms.find(r => r.id === roomId);
-                if (!room) return;
-                editingRoomId = roomId;
-                roomModalTitle.textContent = 'Edit Nama Ruangan';
-                inputs.roomName.value = room.name;
-                openModal(modals.addEditRoom);
-            };
+                forms.addEditRoom.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const roomName = inputs.roomName.value;
+                    if (editingRoomId) {
+                        const roomRef = doc(db, "rooms", editingRoomId);
+                        await updateDoc(roomRef, { name: roomName });
+                    } else {
+                        const newRoomRef = await addDoc(collection(db, "rooms"), { name: roomName, items: [] });
+                        selectRoom(newRoomRef.id);
+                    }
+                    closeModal(modals.addEditRoom);
+                });
 
-            const handleDeleteRoom = (roomId) => {
-                const room = rooms.find(r => r.id === roomId);
-                if (!room) return;
-                roomToDelete = roomId;
-                itemToDelete = null;
-                deleteModalTitle.textContent = `Hapus Ruangan "${room.name}"?`;
-                deleteModalText.textContent = `Semua barang di dalam ruangan ini juga akan terhapus. Aksi ini tidak dapat dibatalkan.`;
-                openModal(modals.deleteConfirmation);
-            };
+                addItemBtn.addEventListener('click', () => {
+                    editingItemId = null;
+                    itemModalTitle.textContent = 'Tambah Barang Baru';
+                    forms.addEditItem.reset();
+                    photoPreview.classList.add('hidden');
+                    photoPreview.src = '#';
+                    itemNoContainer.classList.add('hidden');
+                    compressedPhotoData = null;
+                    openModal(modals.addEditItem);
+                });
 
-            forms.addEditRoom.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const roomName = inputs.roomName.value;
-                if (editingRoomId) {
-                    const roomRef = doc(db, "rooms", editingRoomId);
-                    await updateDoc(roomRef, { name: roomName });
-                } else {
-                    const newRoomRef = await addDoc(collection(db, "rooms"), { name: roomName, items: [] });
-                    selectRoom(newRoomRef.id);
-                }
-                closeModal(modals.addEditRoom);
-            });
+                forms.addEditItem.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const room = rooms.find(r => r.id === selectedRoomId);
+                    if (!room) return;
+                    const submitBtn = forms.addEditItem.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.innerHTML;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Menyimpan...`;
 
-            addItemBtn.addEventListener('click', () => {
-                editingItemId = null;
-                itemModalTitle.textContent = 'Tambah Barang Baru';
-                forms.addEditItem.reset();
-                photoPreview.classList.add('hidden');
-                photoPreview.src = '#';
-                itemNoContainer.classList.add('hidden');
-                compressedPhotoData = null;
-                openModal(modals.addEditItem);
-            });
+                    try {
+                        if (!compressedPhotoData) { throw new Error("Foto wajib diisi atau sedang diproses."); }
+                        const roomRef = doc(db, "rooms", selectedRoomId);
+                        const itemData = { noPendaftaran: inputs.noPendaftaran.value, namaBarang: inputs.namaBarang.value, merk: inputs.merk.value, kodeBarang: inputs.kodeBarang.value, tahun: inputs.tahun.value, jumlah: parseInt(inputs.jumlah.value, 10) || 0, penguasaan: inputs.penguasaan.value, keterangan: inputs.keterangan.value, photo: compressedPhotoData };
+                        if (editingItemId) {
+                            const itemIndex = room.items.findIndex(i => i.id === editingItemId);
+                            if (itemIndex > -1) {
+                                const updatedItems = [...room.items];
+                                updatedItems[itemIndex] = { ...updatedItems[itemIndex], ...itemData };
+                                await updateDoc(roomRef, { items: updatedItems });
+                            }
+                        } else {
+                            const newNo = (room.items?.length || 0) + 1;
+                            await updateDoc(roomRef, { items: arrayUnion({ id: `item_${Date.now()}`, no: newNo, ...itemData }) });
+                        }
+                        closeModal(modals.addEditItem);
+                    } catch (error) { console.error("Gagal menyimpan barang:", error); alert(error.message); } 
+                    finally { submitBtn.disabled = false; submitBtn.innerHTML = originalBtnText; }
+                });
+
+                confirmDeleteBtn.addEventListener('click', async () => {
+                    if (roomToDelete) { await deleteDoc(doc(db, "rooms", roomToDelete)); roomToDelete = null; }
+                    if (itemToDelete) { 
+                        const roomRef = doc(db, "rooms", selectedRoomId);
+                        await updateDoc(roomRef, { items: arrayRemove(itemToDelete) }); 
+                        itemToDelete = null; 
+                    }
+                    closeModal(modals.deleteConfirmation);
+                });
+            }
 
             const handleEditItem = (itemId) => {
                 const room = rooms.find(r => r.id === selectedRoomId);
@@ -483,59 +550,6 @@
                 }
             });
 
-            forms.addEditItem.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const room = rooms.find(r => r.id === selectedRoomId);
-                if (!room) return;
-                const submitBtn = forms.addEditItem.querySelector('button[type="submit"]');
-                const originalBtnText = submitBtn.innerHTML;
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Menyimpan...`;
-
-                try {
-                    if (!compressedPhotoData) {
-                        throw new Error("Foto wajib diisi atau sedang diproses.");
-                    }
-                    
-                    const roomRef = doc(db, "rooms", selectedRoomId);
-                    const itemData = { 
-                        noPendaftaran: inputs.noPendaftaran.value,
-                        namaBarang: inputs.namaBarang.value,
-                        merk: inputs.merk.value,
-                        kodeBarang: inputs.kodeBarang.value,
-                        tahun: inputs.tahun.value,
-                        jumlah: parseInt(inputs.jumlah.value, 10) || 0,
-                        penguasaan: inputs.penguasaan.value,
-                        keterangan: inputs.keterangan.value,
-                        photo: compressedPhotoData 
-                    };
-
-                    if (editingItemId) {
-                        const itemIndex = room.items.findIndex(i => i.id === editingItemId);
-                        if (itemIndex > -1) {
-                            const updatedItems = [...room.items];
-                            updatedItems[itemIndex] = { ...updatedItems[itemIndex], ...itemData };
-                            await updateDoc(roomRef, { items: updatedItems });
-                        }
-                    } else {
-                        const newNo = (room.items?.length || 0) + 1;
-                        await updateDoc(roomRef, { items: arrayUnion({ id: `item_${Date.now()}`, no: newNo, ...itemData }) });
-                    }
-                    closeModal(modals.addEditItem);
-                } catch (error) { console.error("Gagal menyimpan barang:", error); alert(error.message); } 
-                finally { submitBtn.disabled = false; submitBtn.innerHTML = originalBtnText; }
-            });
-            
-            confirmDeleteBtn.addEventListener('click', async () => {
-                if (roomToDelete) { await deleteDoc(doc(db, "rooms", roomToDelete)); roomToDelete = null; }
-                if (itemToDelete) { 
-                    const roomRef = doc(db, "rooms", selectedRoomId);
-                    await updateDoc(roomRef, { items: arrayRemove(itemToDelete) }); 
-                    itemToDelete = null; 
-                }
-                closeModal(modals.deleteConfirmation);
-            });
-
             downloadExcelBtn.addEventListener('click', () => { 
                 const room = rooms.find(r => r.id === selectedRoomId); 
                 if (!room || !room.items || room.items.length === 0) { alert("Tidak ada barang untuk diunduh."); return; } 
@@ -577,9 +591,10 @@
 
         // Check login status on page load
         if (sessionStorage.getItem('isLoggedIn') === 'true') {
+            const role = sessionStorage.getItem('userRole') || 'guest';
             loginScreen.style.display = 'none';
             appContainer.style.display = 'flex';
-            initApp();
+            initApp(role);
         } else {
             loginScreen.style.display = 'flex';
             appContainer.style.display = 'none';
@@ -587,3 +602,4 @@
     </script>
 </body>
 </html>
+
